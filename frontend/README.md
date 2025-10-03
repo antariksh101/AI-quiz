@@ -1,16 +1,123 @@
-# React + Vite
+🚀 AI Prompt Web App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An AI-powered React application that allows users to interact with OpenAI’s GPT API in a clean, modular, and responsive UI.
+The project follows a frontend-backend separation with React (frontend) and Node.js/Express (backend).
+TailwindCSS is used for styling with Dark Mode support.
 
-Currently, two official plugins are available:
+📂 Project Structure
+AI-Quiz/
+│
+├── backend/                # Node.js + Express backend
+│   ├── server.js           # Main server file
+│   ├── routes/
+│   │   └── aiRoutes.js     # Routes for AI interaction
+│   ├── controllers/
+│   │   └── aiController.js # AI logic
+│   └── package.json
+│
+├── frontend/               # React frontend (Vite/CRA)
+│   ├── src/
+│   │   ├── components/     # Reusable UI components
+│   │   ├── pages/          # Page-level components
+│   │   ├── App.js          # Main App
+│   │   └── index.js
+│   ├── tailwind.config.js  # Tailwind config (Dark mode enabled)
+│   └── package.json
+│
+├── README.md
+└── package.json
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+⚙️ Setup Instructions
+🔹 1. Clone the Repository
+git clone https://github.com/your-username/ai-app.git
+cd ai-app
 
-## React Compiler
+🔹 2. Backend Setup
+cd backend
+npm install
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-## Expanding the ESLint configuration
+Create a .env file:
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+PORT=5000
+OPENAI_API_KEY=your_openai_api_key_here
+
+
+Run backend:
+
+node server.js
+
+🔹 3. Frontend Setup
+cd ../frontend
+npm install
+npm start   # CRA
+# OR
+npm run dev # Vite
+
+🛠️ Features
+
+🔹 AI Chat using OpenAI API
+
+🔹 TailwindCSS + Dark Mode
+
+🔹 Reusable Modular Components
+
+🔹 Error & Loading States
+
+🔹 Frontend + Backend separation
+
+🔹 Async handling with Axios
+
+🎯 Prompts Used & Refinements
+
+We tested various prompts for quality & consistency. Example:
+
+Prompt 1 (Initial):
+
+Explain React in simple terms.
+
+
+Output: Too generic.
+
+Refined Prompt (Final):
+
+Explain React in simple terms as if teaching a beginner web developer. Include analogy.
+
+
+This refinement improved clarity & consistency.
+
+🏗️ Architecture & State Management
+
+Backend: Node.js + Express → acts as a proxy for OpenAI API (hides API key).
+
+Frontend: React (functional components + hooks).
+
+State Management: useState + useEffect.
+
+Chat history stored in React state.
+
+API requests handled via Axios with async/await.
+
+UI: TailwindCSS for styling, dark mode enabled (class strategy).
+
+📸 Screenshots
+🔹 Chat Screen
+
+🔹 Dark Mode
+
+⚡ Known Issues & Improvements
+Known Issues:
+
+Long prompts may cause API delay.
+
+No persistent history (refresh clears chat).
+
+Potential Improvements:
+
+Add user authentication.
+
+Store chat history in MongoDB.
+
+Add speech-to-text input.
+
+Add multi-model selection (GPT-4, GPT-3.5).
