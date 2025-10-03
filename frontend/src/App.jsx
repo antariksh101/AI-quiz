@@ -1,35 +1,71 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState } from "react";
+import TopicSelect from "./pages/TopicSelect";
+import QuizGeneration from "./pages/QuizGeneration";
+import QuizPlay from "./pages/QuizPlay";
+import Results from "./pages/Results";
+import ThemeToggle from "./components/ThemeToggle";
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+  const [screen, setScreen] = useState("select");
+  const [topic, setTopic] = useState(null);
+  const [quizData, setQuizData] = useState(null);
+  const [score, setScore] = useState(0);
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
+      <header className="bg-white dark:bg-gray-800 border-b p-4">
+        <div className="max-w-4xl mx-auto flex justify-between items-center">
+          <h1 className="text-xl font-bold text-blue-600 dark:text-yellow-400">
+            Knowledge Quiz
+          </h1>
+          <ThemeToggle />
+        </div>
+      </header>
 
-export default App
+      <main className="max-w-4xl mx-auto p-6">
+        {screen === "select" && (
+          <TopicSelect
+            onChoose={(t) => {
+              setTopic(t);
+              setScreen("generating");
+            }}
+          />
+        )}
+
+        {screen === "generating" && topic && (
+          <QuizGeneration
+            topic={topic}
+            onBack={() => setScreen("select")}
+            onSuccess={(resp) => {
+              setQuizData(resp);
+              setScreen("play");
+            }}
+          />
+        )}
+
+        {screen === "play" && quizData && (
+          <QuizPlay
+            data={quizData}
+            onFinish={(scorePercent) => {
+              setScore(scorePercent);
+              setScreen("result");
+            }}
+          />
+        )}
+
+        {screen === "result" && topic && (
+          <Results
+            topic={topic}
+            scorePercent={score}
+            onRestart={() => {
+              setTopic(null);
+              setQuizData(null);
+              setScore(0);
+              setScreen("select");
+            }}
+          />
+        )}
+      </main>
+    </div>
+  );
+}
