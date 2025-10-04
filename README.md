@@ -1,5 +1,9 @@
 # Knowledge Quiz
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-ai--quiz--sage--chi.vercel.app-blue?style=flat-square&logo=vercel)](https://ai-quiz-sage-chi.vercel.app/)
+
+**Live Demo:** [https://ai-quiz-sage-chi.vercel.app/](https://ai-quiz-sage-chi.vercel.app/)
+
 A modern AI-powered quiz application that generates custom quizzes on various topics using Google Gemini. Built with React (frontend) and Express (backend).
 
 ## Screenshots
