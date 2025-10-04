@@ -9,8 +9,8 @@ A modern AI-powered quiz application that generates custom quizzes on various to
 |------------|-------------|
 | ![Home Screen](/frontend/screenshots/home_screen.png) | Topic selection interface where users choose quiz subjects |
 | ![Loading Screen](/frontend/screenshots/loading_screen.png) | Displays loading animation while questions are being generated |
-| ![Quiz Screen](screenshots/quiz_screen.png) | Quiz interface displaying AI-generated questions and options |
-| ![Feedback Screen](screenshots/feedback_screen.png) | Results and personalized feedback after quiz completion |
+| ![Quiz Screen](/frontend/screenshots/quiz_screen.png) | Quiz interface displaying AI-generated questions and options |
+| ![Feedback Screen](/frontend/screenshots/feedback_screen.png) | Results and personalized feedback after quiz completion |
 
 
 ## Project Structure
