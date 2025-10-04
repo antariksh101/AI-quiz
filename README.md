@@ -2,35 +2,40 @@
 
 A modern AI-powered quiz application that generates custom quizzes on various topics using Google Gemini. Built with React (frontend) and Express (backend).
 
-## Screenshot
-
 ## Screenshots
+
 | Screenshot | Description |
 |------------|-------------|
-| ![Home Screen](/frontend/screenshots/home_screen.png) | Topic selection interface where users choose quiz subjects |
-| ![Loading Screen](/frontend/screenshots/loading_screen.png) | Displays loading animation while questions are being generated |
-| ![Quiz Screen](/frontend/screenshots/quiz_screen.png) | Quiz interface displaying AI-generated questions and options |
-| ![Feedback Screen](/frontend/screenshots/feedback_screen.png) | Results and personalized feedback after quiz completion |
-
+| ![Home Screen](frontend/screenshots/home_screen.png) | Topic selection interface where users choose quiz subjects |
+| ![Loading Screen](frontend/screenshots/loading_screen.png) | Displays loading animation while questions are being generated |
+| ![Quiz Screen](frontend/screenshots/quiz_screen.png) | Quiz interface displaying AI-generated questions and options |
+| ![Feedback Screen](frontend/screenshots/feedback_screen.png) | Results and personalized feedback after quiz completion |
 
 ## Project Structure
 
 ```
 AI-quiz/
 ├── backend/
+│   ├── .env
 │   ├── package.json
 │   └── server.js
 ├── frontend/
-│   ├── package.json
-│   ├── vite.config.js
-│   ├── tailwind.config.js
-│   ├── postcss.config.js
+│   ├── .gitignore
 │   ├── eslint.config.js
 │   ├── index.html
+│   ├── package.json
+│   ├── postcss.config.js
+│   ├── tailwind.config.js
+│   ├── vite.config.js
 │   ├── public/
+│   ├── screenshots/
+│   │   ├── feedback_screen.png
+│   │   ├── home_screen.png
+│   │   ├── loading_screen.png
+│   │   └── quiz_screen.png
 │   └── src/
-│       ├── App.jsx
 │       ├── App.css
+│       ├── App.jsx
 │       ├── index.css
 │       ├── main.jsx
 │       ├── components/
@@ -102,9 +107,10 @@ npm run dev
 
 The frontend will be available at [http://localhost:5173](http://localhost:5173) and the backend at [http://localhost:5000](http://localhost:5000).
 
+
 ## Usage
 
-1. Select a quiz topic.
+1. Select a quiz topic or enter a custom topic.
 2. Wait for the AI to generate your quiz.
 3. Answer the questions.
 4. View your score and receive AI-generated feedback.
@@ -112,8 +118,8 @@ The frontend will be available at [http://localhost:5173](http://localhost:5173)
 
 ## Customization
 
-- **Add Topics:** Edit the `TOPICS` array in [`src/pages/TopicSelect.jsx`](frontend/src/pages/TopicSelect.jsx).
-- **Styling:** Modify Tailwind classes or add custom CSS in [`src/App.css`](frontend/src/App.css).
+- **Add Topics:** Edit the `TOPICS` array in [`frontend/src/pages/TopicSelect.jsx`](frontend/src/pages/TopicSelect.jsx).
+- **Styling:** Modify Tailwind classes or add custom CSS in [`frontend/src/App.css`](frontend/src/App.css).
 - **Quiz Logic:** Update backend logic in [`backend/server.js`](backend/server.js).
 
 ## License
