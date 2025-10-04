@@ -1,16 +1,11 @@
 // src/services/aiService.js
-import { GoogleGenerativeAI } from "@google/generative-ai";
+const BACKEND_API_URL = "http://localhost:5000/api";
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-
-// choose a fast model for quiz generation
-const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
-
+// Safely parse JSON returned by backend
 async function safeJsonParse(text) {
   try {
     return JSON.parse(text);
   } catch (err) {
-    // try to extract JSON block if extra text exists
     const first = text.indexOf("{");
     const last = text.lastIndexOf("}");
     if (first >= 0 && last > first) {
@@ -21,104 +16,67 @@ async function safeJsonParse(text) {
   }
 }
 
-// Helper to send prompt to Gemini
-async function postAI(payload) {
-  const prompt = JSON.stringify(payload);
-
-  const result = await model.generateContent(prompt);
-  const response = result.response;
-  const text = response.text();
-
-  return text;
+// Strip prepended letters like "A. ", "B) ", etc.
+function cleanOptions(options) {
+  return options.map(opt => opt.replace(/^[A-Z]\s*[.)-]\s*/, '').trim());
 }
 
-// Generate 5 MCQ questions for a topic
-export async function generateQuestionsForTopic(topic, maxRetries = 2) {
-  const prompt = {
-    task: "generate_mcq_quiz",
-    topic,
-    count: 5,
-    format: "json",
-    schema: {
-      topic: "string",
-      questions: [
-        {
-          id: "string",
-          question: "string",
-          options: ["string"],
-          correctOptionIndex: "number",
-          explanation: "string (optional)",
-        },
-      ],
-    },
-    instruction:
-      "Return ONLY valid JSON matching the schema. No extra commentary or markdown. Option indices are 0-based.",
-  };
+async function postAI(endpoint, payload) {
+  const res = await fetch(`${BACKEND_API_URL}/${endpoint}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
 
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`Backend API error: ${res.status} ${text}`);
+  }
+
+  return res.text();
+}
+
+export async function generateQuestionsForTopic(topic, maxRetries = 2) {
   let lastErr = null;
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
     try {
-      const raw = await postAI({ prompt });
+      const raw = await postAI("generate-quiz", { topic });
       const parsed = await safeJsonParse(raw);
 
-      if (!parsed.questions || parsed.questions.length !== 5) {
+      if (!parsed.questions || parsed.questions.length !== 5)
         throw new Error("Parsed JSON missing 5 questions");
-      }
+
       parsed.questions.forEach((q, i) => {
-        if (
-          !q.question ||
-          !Array.isArray(q.options) ||
-          typeof q.correctOptionIndex !== "number"
-        ) {
+        if (!q.question || !Array.isArray(q.options) || typeof q.correctOptionIndex !== "number")
           throw new Error(`Invalid question at index ${i}`);
-        }
+        
+        // Clean the options here
+        q.options = cleanOptions(q.options);
       });
+
       return parsed;
     } catch (err) {
       lastErr = err;
-      if (attempt < maxRetries) {
-        await new Promise((r) => setTimeout(r, 500 * (attempt + 1)));
-        continue;
-      }
+      if (attempt < maxRetries) await new Promise((r) => setTimeout(r, 500 * (attempt + 1)));
     }
   }
   throw lastErr;
 }
 
-// Generate AI feedback after quiz
 export async function generateFeedback(scorePercent, topic, maxRetries = 1) {
-  const prompt = {
-    task: "feedback_message",
-    topic,
-    scorePercent,
-    format: "json",
-    schema: {
-      score: "number",
-      message: "string",
-    },
-    instruction:
-      "Return ONLY valid JSON with score (number) and an encouraging custom message as `message`. Keep it concise (1-3 sentences). No extra text.",
-  };
-
   let lastErr = null;
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
     try {
-      const raw = await postAI({ prompt });
+      const raw = await postAI("generate-feedback", { score: scorePercent, topic });
       const parsed = await safeJsonParse(raw);
 
-      if (
-        typeof parsed.score !== "number" ||
-        typeof parsed.message !== "string"
-      ) {
+      if (typeof parsed.score !== "number" || typeof parsed.message !== "string")
         throw new Error("Invalid feedback response");
-      }
+
       return parsed;
     } catch (err) {
       lastErr = err;
-      if (attempt < maxRetries) {
-        await new Promise((r) => setTimeout(r, 400));
-        continue;
-      }
+      if (attempt < maxRetries) await new Promise((r) => setTimeout(r, 400));
     }
   }
   throw lastErr;

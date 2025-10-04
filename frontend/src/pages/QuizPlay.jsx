@@ -25,31 +25,26 @@ export default function QuizPlay({ data, onFinish }) {
 
   return (
     <div className="max-w-3xl mx-auto p-6 space-y-6">
-      {/* Header */}
       <div className="flex justify-between items-center">
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
+        <h2 className="text-xl font-semibold dark:text-white">
           Topic: {data.topic}
         </h2>
         <div className="w-52">
-          <ProgressBar
-            value={Math.round(((index + 1) / questions.length) * 100)}
-          />
+          <ProgressBar value={Math.round(((index + 1) / questions.length) * 100)} />
         </div>
       </div>
 
-      {/* Question */}
       <QuestionCard
         question={questions[index]}
         selectedIndex={selected[index]}
         onSelect={handleSelect}
       />
 
-      {/* Navigation */}
-      <div className="flex justify-between mt-6">
+      <div className="flex justify-between mt-4">
         <button
           onClick={() => setIndex(Math.max(0, index - 1))}
           disabled={index === 0}
-          className="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 disabled:opacity-50 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+          className="px-4 py-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 disabled:opacity-50 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
         >
           Previous
         </button>
@@ -57,22 +52,21 @@ export default function QuizPlay({ data, onFinish }) {
         {index < questions.length - 1 ? (
           <button
             onClick={() => setIndex(index + 1)}
-            className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white transition-colors"
+            className="px-4 py-2 rounded bg-blue-600 hover:bg-blue-700 text-white transition-colors"
           >
             Next
           </button>
         ) : (
           <button
             onClick={() => onFinish(computeScorePercent())}
-            className="px-4 py-2 rounded-lg bg-green-600 hover:bg-green-700 text-white transition-colors"
+            className="px-4 py-2 rounded bg-green-600 hover:bg-green-700 text-white transition-colors"
           >
             Submit Quiz
           </button>
         )}
       </div>
 
-      {/* Progress info */}
-      <p className="text-sm text-gray-600 dark:text-gray-400">
+      <p className="text-sm text-gray-600 dark:text-gray-300">
         Answered: {selected.filter((s) => s !== null).length}/{questions.length}
       </p>
     </div>

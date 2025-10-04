@@ -9,17 +9,16 @@ const TOPICS = [
 
 export default function TopicSelect({ onChoose }) {
   return (
-    <div className="max-w-2xl mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-6 text-gray-900 dark:text-gray-100">
+    <div className="max-w-2xl mx-auto p-6 space-y-6">
+      <h1 className="text-3xl font-bold mb-4 dark:text-white">
         Choose a topic
       </h1>
-
-      <div className="grid grid-cols-2 gap-6">
+      <div className="grid grid-cols-2 gap-4">
         {TOPICS.map((t) => (
           <button
             key={t.id}
             onClick={() => onChoose(t.id)}
-            className="p-6 border rounded-2xl shadow-sm bg-white dark:bg-gray-800 hover:shadow-md transition-transform transform hover:-translate-y-1 text-blue-600 dark:text-yellow-300 text-left"
+            className="p-6 border rounded-2xl bg-white dark:bg-gray-800 text-blue-600 dark:text-yellow-300 text-left hover:scale-105 transition-transform shadow-sm"
           >
             <h2 className="text-lg font-semibold">{t.name}</h2>
             <p className="text-sm mt-2 text-gray-500 dark:text-gray-400">
