@@ -18,7 +18,8 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={() => setDark(!dark)}
-      className="ml-4 px-3 py-1 rounded-lg bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-100 text-sm transition-colors"
+      className="ml-4 px-3 py-1 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 text-sm font-medium transition-colors hover:bg-gray-300 dark:hover:bg-gray-600"
+      aria-label="Toggle theme"
     >
       {dark ? "☀️ Light" : "🌙 Dark"}
     </button>
